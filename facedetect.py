@@ -10,12 +10,18 @@ url = "http://192.168.1.104:8080/shot.jpg"
 
 while True:
 	#Open url
-    imgresp = urllib.urlopen(url)
+    img_resp = urllib.urlopen(url)
+
 	#Convert image into numpy byte array as cvtColor requires  array as input
-    imgnp = np.array(bytearray(imgresp.read()), dtype=np.uint8)
+    img_np = np.array(bytearray(img_resp.read()), dtype=np.uint8)
+
 	#Decode it so that it is readable as cv2 image(Which is a numpy array now)
-    img = cv2.imdecode(imgnp, -1)
+    img = cv2.imdecode(img_np, -1)
+	
+	#Conver the image to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	
+	#Detect faces
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     for (x, y, w, h) in faces:
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
